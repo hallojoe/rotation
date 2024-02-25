@@ -6,7 +6,7 @@ export class Rotation<T> {
 
   // Public read-only getter for the value property
   get value(): T[] | undefined {
-    return this._value;
+    return this._value
   }
 
   // Private member to keep track of the current index
@@ -77,26 +77,42 @@ export class Rotation<T> {
   // Method to get the element at a specific index in rotation
   get(index?: number): T | undefined {
     // If value is not set or array is empty, return undefined
-    if (!this._value || this._value.length === 0) return undefined;
+    if (!this._value || this._value.length === 0) return undefined
     // Ensure value exists
     this.ensureValue()
     // If index is not provided, return the current element
-    if (index === undefined) return this._value[this.currentIndex];
+    if (index === undefined) return this._value[this.currentIndex]
     // If index is out of range, return undefined
-    if (index < 0 || index >= this._value.length) return undefined;
+    if (index < 0 || index >= this._value.length) return undefined
     // Update current index to the specified index
-    this.currentIndex = index;
+    this.currentIndex = index
     // Return the element at the specified index
-    return this._value[this.currentIndex];
+    return this._value[this.currentIndex]
   }
 
   // Method to peek at an element in rotation without changing the current index
   peek(index?: number): T | undefined {
-    // If value is not set or array is empty, return undefined
+
+    // Guard index
+    if (index !== undefined && index < 0) return undefined
+
+    // Convert undefined to -1
+    index = index ?? -1
+
+    // Return current when no index
+    if(index < 0 && this._value) return this._value[this.currentIndex];
+
+    // Return when no value
     if (!this._value || this._value.length === 0) return undefined
+
+    // Return when index is out of bounds
+    if (index > this._value.length - 1) return undefined
+
     // If index is provided and within range, return the element at that index
     if (index !== undefined && index >= 0 && index < this._value.length) return this._value[index]
-    // Otherwise, return the current element
+
+    // If index is not provided, return the current element without changing currentIndex
     return this._value[this.currentIndex]
-  }
+    
+  }  
 }

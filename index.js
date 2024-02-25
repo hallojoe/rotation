@@ -95,13 +95,24 @@ var Rotation = /** @class */ (function () {
     };
     // Method to peek at an element in rotation without changing the current index
     Rotation.prototype.peek = function (index) {
-        // If value is not set or array is empty, return undefined
+        // Guard index
+        if (index !== undefined && index < 0)
+            return undefined;
+        // Convert undefined to -1
+        index = index !== null && index !== void 0 ? index : -1;
+        // Return current when no index
+        if (index < 0 && this._value)
+            return this._value[this.currentIndex];
+        // Return when no value
         if (!this._value || this._value.length === 0)
+            return undefined;
+        // Return when index is out of bounds
+        if (index > this._value.length - 1)
             return undefined;
         // If index is provided and within range, return the element at that index
         if (index !== undefined && index >= 0 && index < this._value.length)
             return this._value[index];
-        // Otherwise, return the current element
+        // If index is not provided, return the current element without changing currentIndex
         return this._value[this.currentIndex];
     };
     return Rotation;
